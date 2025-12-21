@@ -1,33 +1,41 @@
+import { v4 as uuidv4 } from "uuid";
+
 export default function AssignmentDao(db) {
-    const updateAssignment = (assignmentId, assignmentUpdates) => {
-        const assignment = db.assignments.find((a) => a._id === assignmentId);
-        if (assignment) {
-            Object.assign(assignment, assignmentUpdates);
-            return assignment;
-        }
-        return null;
+
+  function findAssignmentForCourse(courseId) {
+    const { assignments } = db;
+    return assignments.filter((assignment) => assignment.course === courseId);
+  };
+
+  function createAssignment(assignment) {
+    const newAssignment = {...assignment, _id: uuidv4()};
+    db.assignment = [...db.assignments, newAssignment];
+    return newAssignment;
+};
+    function updateAssignment(assignmentId, assignmentUpdates) {
+       const { assignments } = db;
+       db.assignments = assignments.map((assignment) => assignment._id === assignmentId ? {...assignment, ...assignmentUpdates} : assignment);
+        return db.assignments.find((assignment) => assignment._id === assignmentId);
     };
-    const findAssignmentForCourse = (courseId) => {
-    return db.assignments.filter((assignment) => assignment.course === courseId);
-    };
-    const createAssignment = (assignment) => {
-        const newAssignment = {...assignment, _id: Date.now().toString()};
-        db.assignment.push(newAssignment);
-        return newAssignment;
-    };
-    const deleteAssignment = (assignmentId) => {
-        const index = db.assignments.findIndex((a) => a._id === assignmentId);
-        if (index !== -1) {
-          db.assignments.splice(index, 1);
-          return { deleted: true };
-        }
-        return { deleted: false };
+    
+   
+    function deleteAssignment(assignmentId) {
+       const { assignments } = db;
+        db.assignments = assignments.filter((assignment) => assignment._id !== assignmentId);
+        return { status: "OK" };
       };
+
+      function findAssignmentById(assignmentId) {
+        const { assignments } = db;
+        return assignments.find((assignment) => assignment._id === assignmentId);
+      };
+
     
       return {
         findAssignmentForCourse,
         createAssignment,
         updateAssignment,
         deleteAssignment,
+        findAssignmentById,
       };
 }

@@ -70,23 +70,28 @@ export default function WorkingWithArrays(app) {
     const updateTodoTitle = (req, res) => {
         const { id, title } = req.params;
         const todo = todos.find((t) => t.id === parseInt(id)); 
+        if (!todo) {
+            return res.status(404).json({ message: `Todo with ID ${id} not found` });
+        }
         todo.title = title;
         res.json(todos);
     };
     const updateTodoCompleted = (req, res) => {
         const { id, completed } = req.params;
         const todo = todos.find((t) => t.id === parseInt(id));
-        if (todo) {
-            todo.completed = completed === "true";
+        if (!todo) {
+            return res.status(404).json({ message: `Todo with ID ${id} not found` });
         }
+        todo.completed = completed === "true";
         res.json(todos);
     };
     const updateTodoDescription = (req, res) => {
         const { id, description } = req.params;
         const todo = todos.find((t) => t.id === parseInt(id));
-        if (todo) {
-            todo.description = description;
+        if (!todo) {
+            return res.status(404).json({ message: `Todo with ID ${id} not found` });
         }
+        todo.description = description;
         res.json(todos);
     };
     app.put("/lab5/todos/:id", updateTodo)
@@ -95,7 +100,7 @@ export default function WorkingWithArrays(app) {
     app.get("/lab5/todos/:id/title/:title", updateTodoTitle);
     app.get("/lab5/todos/:id/delete", removeTodo);
     app.delete("/lab5/todos/:id", deleteTodo);
-    app.get("/lab5'todos/create", createNewTodo);
+    app.get("/lab5/todos/create", createNewTodo);
     app.post("/lab5/todos", postNewTodo)
     app.get("/lab5/todos", getTodos);
     app.get("/lab5/todos/:id", getTodoById);

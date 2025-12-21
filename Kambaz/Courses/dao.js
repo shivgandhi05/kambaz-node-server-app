@@ -1,24 +1,39 @@
-import model from "./model.js";
 import { v4 as uuidv4 } from "uuid";
-export default function UsersDao() {
-  const createUser = (user) => {
-  const newUser = { ...user, _id: uuidv4() };
-  return model.create(newUser);
-}
-  const findAllUsers = () => model.find();
-  const findUserById = (userId) => model.findById(userId);
-  const findUserByUsername = (username) =>  model.findOne({ username: username });
-  const findUserByCredentials = (username, password) =>  model.findOne({ username, password });
-  const updateUser = (userId, user) =>  model.updateOne({ _id: userId }, { $set: user });
-  const deleteUser = (userId) => model.findByIdAndDelete( userId );
-  const findUserbyRole = (role) => model.find({ role: role });
-  const findUsersByPartialName = (partialName) => {
-    const regex = new RegExp(partialName, "i"); // 'i' makes it case-insensitive
-    return model.find({
-      $or: [{ firstName: { $regex: regex } }, { lastName: { $regex: regex } }],
-    });
+export default function CoursesDao(db) {
+  function findAllCourses() {
+    return db.courses;
   };
-  
-  return { createUser, findAllUsers, findUserById, findUserByUsername, findUserByCredentials, updateUser, deleteUser, findUserbyRole, findUsersByPartialName, };
-}
 
+  function createCourse(course) {
+    const newCourse = { ...course, _id: uuidv4() };
+    db.courses = [...db.courses, newCourse];
+    return newCourse;
+  };
+
+  function deleteCourse(courseId) {
+    const { courses, enrollments } = db;
+    db.courses = courses.filter((course) => course._id !== courseId);
+    db.enrollments = enrollments.filter((enrollment) => enrollment.course !== courseId);
+    return { status: "OK" };
+  };
+
+  function findCoursesForEnrolledUser(userId) {
+    const { courses, enrollments } = db;
+    const enrolledCourses = courses.filter((course) =>
+      enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
+    return enrolledCourses;
+  };
+
+  function updateCourse(courseId, courseUpdates) {
+    const { courses } = db;
+    const course = courses.find((course) => course._id === courseId);
+    if (!course) {
+      return null;
+    }
+    Object.assign(course, courseUpdates);
+    return course;
+  };
+
+  return { findAllCourses, findCoursesForEnrolledUser, createCourse, deleteCourse, updateCourse};
+  
+}
