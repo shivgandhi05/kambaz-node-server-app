@@ -9,7 +9,7 @@ export default function AssignmentDao(db) {
 
   function createAssignment(assignment) {
     const newAssignment = {...assignment, _id: uuidv4()};
-    db.assignment = [...db.assignments, newAssignment];
+    db.assignments = [...db.assignments, newAssignment];
     return newAssignment;
 };
     function updateAssignment(assignmentId, assignmentUpdates) {
