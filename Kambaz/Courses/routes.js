@@ -10,13 +10,19 @@ export default function CourseRoutes(app, db) {
     let { userId } = req.params;
     if (userId === "current") {
       const currentUser = req.session["currentUser"];
+      console.log("Current user from session:", currentUser)
       if (!currentUser) {
         res.sendStatus(401);
         return;
       }
       userId = currentUser._id;
     }
+    console.log("Finding courses for userId:", userId);
+    console.log("All enrollments:", db.enrollments);
+    console.log("All courses:", db.courses);
+    
     const courses = dao.findCoursesForEnrolledUser(userId);
+    console.log("Courses found for user:", courses);
     res.json(courses);
   };
 
@@ -58,9 +64,6 @@ export default function CourseRoutes(app, db) {
   };
 
 
-
-
-  
 
   app.get("/api/courses", findAllCourses);
   app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);

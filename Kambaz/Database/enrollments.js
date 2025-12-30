@@ -124,6 +124,28 @@ export default[
         "lastActivity": "Oct 17, 2025",
         "totalActivity": "6h 45m"
       }
+    },
+    {
+      "_id": "10",
+      "course": "RS101",
+      "user": {
+        "_id": "u2",
+        "username": "bob",
+        "firstName": "Bob",
+        "lastName": "Builder",
+        "role": "FACULTY"
+      }
+    },
+    {
+      "_id": "11",
+      "course": "RS102",
+      "user": {
+        "_id": "u2",
+        "username": "bob",
+        "firstName": "Bob",
+        "lastName": "Builder",
+        "role": "FACULTY"
+      }
     }
   ]
   

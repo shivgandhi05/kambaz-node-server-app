@@ -19,8 +19,17 @@ export default function CoursesDao(db) {
 
   function findCoursesForEnrolledUser(userId) {
     const { courses, enrollments } = db;
+    console.log("DAO - Looking for userId:", userId);
+    console.log("DAO - Enrollments:", enrollments);
+    
     const enrolledCourses = courses.filter((course) =>
-      enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
+      enrollments.some((enrollment) => {
+        const enrollmentUserId = typeof enrollment.user === 'object'
+        ? enrollment.user._id
+        : enrollment.user;
+        return enrollmentUserId === userId && enrollment.course === course._id;
+      })
+    );
     return enrolledCourses;
   };
 
