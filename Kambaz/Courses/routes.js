@@ -3,7 +3,7 @@ import EnrollmentsDao from "../Enrollments/dao.js";
 
 
 export default function CourseRoutes(app, db) {
-  const dao = CoursesDao();
+  const dao = CoursesDao(db);
   const enrollmentsDao = EnrollmentsDao(db);
 
   const findCoursesForEnrolledUser = async (req, res) => {
@@ -26,7 +26,7 @@ export default function CourseRoutes(app, db) {
     res.json(courses);
   };
 
-  const findAllCourses = async(req, res) => {
+  const findAllCourses = async (req, res) => {
     const courses = await dao.findAllCourses();
     res.send(courses);
   };
@@ -47,19 +47,19 @@ export default function CourseRoutes(app, db) {
     res.send(status);
   };
   
-  const updateCourse = (req, res) => {
+  const updateCourse = async (req, res) => {
     console.log("Update course called");
     const { courseId } = req.params;
     const courseUpdates = req.body;
 
-    if (!courseUpdates) {
-      return res.status(400).json({ message: "No updates provided" });
-    }
+    // if (!courseUpdates) {
+    //   return res.status(400).json({ message: "No updates provided" });
+    // }
 
-    const status = dao.updateCourse(courseId, courseUpdates);
-    if (!status) {
-      return res.status(404).json({ message: "Course not found" });
-    }
+    const status = await dao.updateCourse(courseId, courseUpdates);
+    // if (!status) {
+    //   return res.status(404).json({ message: "Course not found" });
+    // }
     res.send(status);
   };
 

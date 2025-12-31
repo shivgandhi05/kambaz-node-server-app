@@ -1,5 +1,7 @@
-import { model } from "mongoose";
+
 import { v4 as uuidv4 } from "uuid";
+import model from "./model.js";
+
 export default function CoursesDao(db) {
   function findAllCourses() {
     return model.find();
@@ -38,14 +40,16 @@ export default function CoursesDao(db) {
     return enrolledCourses;
   };
 
-  function updateCourse(courseId, courseUpdates) {
-    const { courses } = db;
-    const course = courses.find((course) => course._id === courseId);
-    if (!course) {
-      return null;
-    }
-    Object.assign(course, courseUpdates);
-    return course;
+   function updateCourse(courseId, courseUpdates) {
+    
+    // const { courses } = db;
+    // const course = courses.find((course) => course._id === courseId);
+    // if (!course) {
+    //   return null;
+    // }
+    // Object.assign(course, courseUpdates);
+    // return course;
+    return model.updateOne({ _id: courseId}, {$set: courseUpdates});
   };
 
   return { findAllCourses, findCoursesForEnrolledUser, createCourse, deleteCourse, updateCourse};
