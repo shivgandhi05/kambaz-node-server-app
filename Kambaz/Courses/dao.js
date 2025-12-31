@@ -1,24 +1,29 @@
+import { model } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 export default function CoursesDao(db) {
   function findAllCourses() {
-    return db.courses;
+    return model.find();
   };
 
   function createCourse(course) {
     const newCourse = { ...course, _id: uuidv4() };
-    db.courses = [...db.courses, newCourse];
-    return newCourse;
+    return model.create(newCourse);
+    // db.courses = [...db.courses, newCourse];
+    // return newCourse;
   };
 
   function deleteCourse(courseId) {
-    const { courses, enrollments } = db;
-    db.courses = courses.filter((course) => course._id !== courseId);
+    const { enrollments } = db;
+    // db.courses = courses.filter((course) => course._id !== courseId);
     db.enrollments = enrollments.filter((enrollment) => enrollment.course !== courseId);
-    return { status: "OK" };
+    // return { status: "OK" };
+    return model.deleteOne({ _id: courseId });
   };
 
-  function findCoursesForEnrolledUser(userId) {
-    const { courses, enrollments } = db;
+  async function findCoursesForEnrolledUser(userId) {
+    const { enrollments } = db;
+
+    const courses = await model.find();
     console.log("DAO - Looking for userId:", userId);
     console.log("DAO - Enrollments:", enrollments);
     

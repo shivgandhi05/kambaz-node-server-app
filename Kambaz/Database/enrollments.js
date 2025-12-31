@@ -133,18 +133,9 @@ export default[
         "username": "bob",
         "firstName": "Bob",
         "lastName": "Builder",
-        "role": "FACULTY"
-      }
-    },
-    {
-      "_id": "11",
-      "course": "RS102",
-      "user": {
-        "_id": "u2",
-        "username": "bob",
-        "firstName": "Bob",
-        "lastName": "Builder",
-        "role": "FACULTY"
+        "role": "FACULTY",
+        "lastActivity": "Oct 17, 2025",
+        "totalActivity": "9h 45m"
       }
     }
   ]
