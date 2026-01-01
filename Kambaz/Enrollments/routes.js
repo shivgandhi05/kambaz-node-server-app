@@ -1,8 +1,8 @@
 // Enrollments/routes.js
 import EnrollmentsDao from "./dao.js";
 
-export default function EnrollmentsRoutes(app, db) {
-  const dao = EnrollmentsDao(db);
+export default function EnrollmentsRoutes(app) {
+  const dao = EnrollmentsDao();
 
   const findCoursesForEnrolledUser = async (req, res) => {
     let { userId } = req.params;
@@ -60,7 +60,6 @@ export default function EnrollmentsRoutes(app, db) {
     }
   };
 
-  // Register routes
   app.get("/api/enrollments", findAllEnrollments);
   app.get("/api/enrollments/user/:userId", findEnrollmentsForUser);
   app.get("/api/enrollments/course/:courseId", findEnrollmentsForCourse);
