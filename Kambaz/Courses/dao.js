@@ -4,7 +4,7 @@ import model from "./model.js";
 
 export default function CoursesDao(db) {
   function findAllCourses() {
-    return model.find();
+    return model.find({},{ name: 1, description: 1 });
   };
 
   function createCourse(course) {
@@ -15,9 +15,9 @@ export default function CoursesDao(db) {
   };
 
   function deleteCourse(courseId) {
-    const { enrollments } = db;
+    // const { enrollments } = db;
     // db.courses = courses.filter((course) => course._id !== courseId);
-    db.enrollments = enrollments.filter((enrollment) => enrollment.course !== courseId);
+    // db.enrollments = enrollments.filter((enrollment) => enrollment.course !== courseId);
     // return { status: "OK" };
     return model.deleteOne({ _id: courseId });
   };
@@ -25,7 +25,7 @@ export default function CoursesDao(db) {
   async function findCoursesForEnrolledUser(userId) {
     const { enrollments } = db;
 
-    const courses = await model.find();
+    const courses = await model.find({},{ name: 1, description: 1 });
     console.log("DAO - Looking for userId:", userId);
     console.log("DAO - Enrollments:", enrollments);
     
