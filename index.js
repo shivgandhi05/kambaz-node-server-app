@@ -9,6 +9,7 @@ import UserRoutes from "./Kambaz/Users/routes.js";
 import CourseRoutes from "./Kambaz/Courses/routes.js";
 import ModulesRoutes from "./Kambaz/Modules/routes.js";
 import AssignmentsRoutes from "./Kambaz/Assignments/routes.js";
+import QuizzesRoutes from "./Kambaz/Quizzes/routes.js";
 import mongoose from "mongoose";
 
 
@@ -42,6 +43,7 @@ UserRoutes(app, db);
 CourseRoutes(app, db);
 ModulesRoutes(app, db);
 AssignmentsRoutes(app, db);
+QuizzesRoutes(app, db);
 Lab5(app);
 Hello(app);
 app.listen(4000)
